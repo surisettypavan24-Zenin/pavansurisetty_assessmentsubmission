@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReferralIdRouteImport } from './routes/referral.$id'
+import { Route as DashboardReferralsRouteImport } from './routes/dashboard.referrals'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -28,34 +29,43 @@ const ReferralIdRoute = ReferralIdRouteImport.update({
   path: '/referral/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardReferralsRoute = DashboardReferralsRouteImport.update({
+  id: '/dashboard/referrals',
+  path: '/dashboard/referrals',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/dashboard/referrals': typeof DashboardReferralsRoute
   '/referral/$id': typeof ReferralIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/dashboard/referrals': typeof DashboardReferralsRoute
   '/referral/$id': typeof ReferralIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/dashboard/referrals': typeof DashboardReferralsRoute
   '/referral/$id': typeof ReferralIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/referral/$id'
+  fullPaths: '/' | '/login' | '/dashboard/referrals' | '/referral/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/referral/$id'
-  id: '__root__' | '/' | '/login' | '/referral/$id'
+  to: '/' | '/login' | '/dashboard/referrals' | '/referral/$id'
+  id: '__root__' | '/' | '/login' | '/dashboard/referrals' | '/referral/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  DashboardReferralsRoute: typeof DashboardReferralsRoute
   ReferralIdRoute: typeof ReferralIdRoute
 }
 
@@ -82,12 +92,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferralIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/referrals': {
+      id: '/dashboard/referrals'
+      path: '/dashboard/referrals'
+      fullPath: '/dashboard/referrals'
+      preLoaderRoute: typeof DashboardReferralsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  DashboardReferralsRoute: DashboardReferralsRoute,
   ReferralIdRoute: ReferralIdRoute,
 }
 export const routeTree = rootRouteImport
