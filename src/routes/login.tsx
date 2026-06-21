@@ -34,7 +34,13 @@ function LoginPage() {
     setError("");
     setSubmitting(true);
     try {
-      const token = await login(email, password);
+      // Read straight from the form so browser autofill values are captured
+      // even when React's onChange never fired.
+      const form = e.currentTarget as HTMLFormElement;
+      const fd = new FormData(form);
+      const emailValue = (fd.get("email") as string)?.trim() || email;
+      const passwordValue = (fd.get("password") as string) || password;
+      const token = await login(emailValue, passwordValue);
       setToken(token);
       navigate({ to: "/", replace: true });
     } catch (err) {
